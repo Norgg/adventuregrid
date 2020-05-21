@@ -1,9 +1,9 @@
-from django.shortcuts import render_to_response
-from models import *
+from django.shortcuts import render
+from .models import Grid
 from django.views.decorators.csrf import csrf_exempt
 
 def home(request):
-  return render_to_response('index.html')
+  return render(request, 'index.html')
 
 @csrf_exempt
 def grid(request, x, y):
@@ -26,4 +26,4 @@ def grid(request, x, y):
       Grid(x=x, y=y, word=word).save()
 
 
-  return render_to_response('grid.html', dict(x=int(x)*130, y=int(y)*25, word=word))
+  return render(request, 'grid.html', dict(x=int(x)*130, y=int(y)*25, word=word))

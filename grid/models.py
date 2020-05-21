@@ -1,4 +1,4 @@
-from django.db.models import *
+from django.db.models import Model, IntegerField, CharField
 
 # Create your models here.
 class Grid(Model):
