@@ -1,0 +1,26 @@
+
+{% if word %}
+  <div class="grid" id="grid-{{x}}-{{y}}" style="left: {{x}}; top: {{y}};">
+    {{word}}
+  </div>
+{% else %}
+  <div class="grid" id="grid-{{x}}-{{y}}" style="left: {{x}}; top: {{y}};">
+    <form id="grid-{{x}}-{{y}}-form">
+      {{csrf_token}}
+      <input name="word" maxlength="24" id="word-{{x}}-{{y}}"></input>
+      <script>
+        editing=true;
+        var $form = $('#grid-{{x}}-{{y}}-form');
+        $('#word-{{x}}-{{y}}').focus();
+        $form.submit(function(e) {
+          $.post('/'+x+'/'+y, $form.serialize(), function(data) {
+            editing=false;
+            $('#grid-{{x}}-{{y}}').remove();
+            $('#board').append(data);
+          });
+          return false;
+        });
+      </script>
+    </form>
+  </div>
+{% endif %}

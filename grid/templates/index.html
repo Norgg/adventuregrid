@@ -1,0 +1,72 @@
+<html>
+<head>
+  <title>A Grid With Some Adventure In</title>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+  <style>
+    .grid {
+      padding:0px;
+      margin: 0px;
+      position:absolute; 
+      border: 1px solid #ccc; 
+      width: 128px; 
+      height: 23px;
+      overflow: hidden;
+      text-align: center;
+      z-index: 100;
+    }
+    .grid input {
+      padding:0px;
+      margin: 0px;
+      width: 128px; 
+      height: 23px;
+    }
+    #hilight {
+      width: 126px;
+      height: 21px;
+      border: 1px solid #0a0;
+      position: absolute;
+      z-index: 50;
+    }
+  </style>
+</head>
+  <div id="board"></div>
+  <div id="hilight"></div>
+<script>
+  var x = 5;
+  var y = 5;
+  var editing = false;
+  function getGrid() {
+    $('#hilight').offset({left:x*130+1, top:y*25+1});
+    
+    window.scrollTo(x*130 - window.innerWidth/2, y*25 - window.innerHeight/2);
+    if ($('#grid-'+x*130+'-'+y*25).length > 0) return;
+
+    $.get('/'+x+'/'+y, function(data) {
+      $('#board').append(data);
+    });
+  }
+  $(function() {
+    getGrid();
+    $('body').keydown(function(e) {
+      if (editing) return;
+      if (e.which == 97 || e.which == 65 || e.which == 37) { //a/A/left
+        if (x > 0) {
+          x -= 1;
+          getGrid();
+        }
+      } else if (e.which == 100 || e.which == 68 || e.which == 39) { //d
+        x += 1;
+        getGrid();
+      } else if (e.which == 119 || e.which == 87 || e.which == 38) { //w
+        if (y > 0) {
+          y -= 1;
+          getGrid();
+        }
+      } else if (e.which == 115 || e.which == 83 || e.which == 40) { //s
+        y += 1;
+        getGrid();
+      }
+    });
+  });
+</script>
+</html>
